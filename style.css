@@ -1,0 +1,217 @@
+:root {
+    --bg: #f6f6f6;
+    --hero: #eeeeee;
+    --card: #ffffff;
+  
+    --text: #111111;
+    --muted: #6b6b6b;
+  
+    --border: #e6e6e6;
+    --line: #d9d2c6;
+  
+    --chipBorder: #cfc6b8;
+    --chipText: #A59888;
+    --chipActiveBg: #A59888;
+    --chipActiveText: #ffffff;
+  
+    --primary: #7b6f63;
+    --primaryText: #ffffff;
+  }
+  
+  * { box-sizing: border-box; }
+  
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+  }
+  
+  .container {
+    max-width: 420px;
+    margin: 0 auto;
+    padding: 0 16px 28px;
+  }
+  
+  /* Header */
+  .hero {
+    background: var(--hero);
+    padding: 22px 16px 18px;
+    margin: 0 -16px; /* 讓灰底貼齊左右 */
+    text-align: center;
+  }
+  
+  .hero-title {
+    font-size: 28px;
+    margin: 12px 0 12px;
+    letter-spacing: 1px;
+  }
+  
+  .hero-subtitle {
+    margin: 0 auto 18px;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.5;
+    max-width: 320px;
+  }
+  
+  /*（舊 steps 版本保留不刪，但實際用的是下面 step-wrapper 那組）*/
+  .steps {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--text);
+  }
+  
+  .step b { margin-left: 4px; font-weight: 700; }
+  .dots { color: #8f8f8f; letter-spacing: 2px; }
+  
+  /* ✅ 選項區塊：改成「無卡片感 + 虛線分隔 + 寬度貼齊」 */
+  .card {
+    background: transparent;
+    border: none;
+    border-radius: 0;
+  
+    padding: 8px 16px 18px;
+    margin: 0 -16px;              /* ⭐ 跟 hero 一樣貼齊左右 */
+  }
+  
+  .card-title {
+    display: inline-flex;               /* ⭐ 關鍵：寬度只包文字 */
+    align-items: center;
+    gap: 8px;
+    font-size: 18px;
+    font-weight: 800;
+    margin: 0 0 12px;
+    position: relative;
+  }
+
+  /* 只畫「文字寬度」的線 */
+  .card-title::after {
+    content: "";
+    position: absolute;
+    left: 26px;                  /* ⭐ icon 寬度（約 18px）+ gap */
+    bottom: -6px;
+  
+    width: calc(100% - 26px);    /* ⭐ 扣掉 icon，只剩文字寬 */
+    height: 1px;                 /* 細線＝設計線 */
+    background-color: #A59888;
+  }
+  
+  .icon { font-size: 18px; }
+  
+  /* ✅ 虛線分隔（像設計稿那條） */
+  .divider {
+    border: none;
+    border-top: 2px dotted var(--line);
+    margin: 28px 0 0;
+  }
+  
+  /* ✅ Chips：三個一行＋細長膠囊 */
+  .chips {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-top: 16px;         /* ⭐ 小標與選項拉開，但不靠 title 撐高 */
+  }
+  
+  .chip {
+    width: 100%;
+    border: 1.5px solid var(--chipBorder);
+    background: #fff;
+    color: var(--chipText);
+  
+    padding: 8px 0;              /* ⭐ 變細長，不要胖 */
+    border-radius: 999px;
+    font-size: 16px;              /* 設計稿偏大 */
+    font-weight: 700;
+  
+    cursor: pointer;
+    transition: transform 0.06s ease;
+  }
+  
+  .chip:active { transform: scale(0.98); }
+  
+  .chip.active {
+    background: var(--chipActiveBg);
+    color: var(--chipActiveText);
+    border-color: var(--chipActiveBg);
+  }
+  
+  /* Submit */
+  .submit-link { text-decoration: none; display: block; }
+  
+  .submit {
+    width: 60%;
+    margin: 20px auto 0;         /* ⭐ 置中 */
+    padding: 14px 0;             /* ⭐ 變薄 */
+    border: none;
+    border-radius: 999px;
+    background: var(--primary);
+    color: var(--primaryText);
+    font-size: 18px;
+    font-weight: 800;
+    cursor: pointer;
+    display: block;
+  }
+  
+  /* Step 區塊（P2 Header） */
+  .step-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  
+  .bracket {
+    font-size: 30px;
+    font-weight: 500;
+    line-height: 1;
+    margin: 0px;
+  }
+  
+  .steps {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 12px;   /* 空間加在這裡 */
+  }
+  
+  .step-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1.5;
+    color: #000;
+    font-weight: 700;
+  }
+  
+  .step-num {
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    font-weight: 700;
+    display: inline-block;
+    transform: translateX(1.5px);
+  }
+  
+  .step-text {
+    font-size: 14px;
+    font-weight: 700;
+  }
+  
+  .step-arrow {
+    font-size: 12px;
+    font-weight: 700;             /* ⭐ 你要的「虛線＋箭頭加粗」 */
+    letter-spacing: 0.3px;
+    color: #000;
+    margin: 0 2px;
+  }
+
+  .options-wrap{
+    background: #fff;
+    margin: 0 -16px;        /* 跟 hero 灰底切齊左右 */
+    padding: 14px 16px 32px;
+  }
+  

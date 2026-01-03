@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>P2 穿搭推薦輸入</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <main class="container">
+
+    <!-- Header（灰底區） -->
+    <header class="hero">
+      <h1 class="hero-title">今天穿什麼</h1>
+      <p class="hero-subtitle">
+        系統會從你的衣櫃中，為你搭配最適合的穿搭。
+      </p>
+
+      <div class="step-wrapper" aria-label="步驟提示">
+        <span class="bracket left">(</span>
+
+        <div class="steps">
+          <div class="step-item">
+            <span class="step-num">STEP 1.</span>
+            <span class="step-text">選情境</span>
+          </div>
+
+          <div class="step-arrow">- - - - - &gt;</div>
+
+          <div class="step-item">
+            <span class="step-num">STEP 2.</span>
+            <span class="step-text">選天氣</span>
+          </div>
+
+          <div class="step-arrow">- - - - - &gt;</div>
+
+          <div class="step-item">
+            <span class="step-num">STEP 3.</span>
+            <span class="step-text">選風格</span>
+          </div>
+        </div>
+
+        <span class="bracket right">)</span>
+      </div>
+    </header>
+
+    <!-- 下方整片白底（選項區） -->
+    <div class="options-wrap">
+
+      <!-- 區塊 1：情境 -->
+      <section class="card" data-group="scene">
+        <h2 class="card-title">
+          <span class="icon" aria-hidden="true">📍</span>
+          今天要去哪？
+        </h2>
+
+        <div class="chips">
+          <button class="chip" type="button" data-value="上課">上課</button>
+          <button class="chip" type="button" data-value="上班">上班</button>
+          <button class="chip" type="button" data-value="正式">正式</button>
+          <button class="chip" type="button" data-value="約會">約會</button>
+          <button class="chip" type="button" data-value="運動">運動</button>
+        </div>
+
+        <hr class="divider" />
+      </section>
+
+      <!-- 區塊 2：天氣 -->
+      <section class="card" data-group="temp">
+        <h2 class="card-title">
+          <span class="icon" aria-hidden="true">☁️</span>
+          天氣怎麼樣？
+        </h2>
+
+        <div class="chips">
+          <button class="chip" type="button" data-value="偏冷">偏冷</button>
+          <button class="chip" type="button" data-value="舒適">舒適</button>
+          <button class="chip" type="button" data-value="偏熱">偏熱</button>
+        </div>
+
+        <hr class="divider" />
+      </section>
+
+      <!-- 區塊 3：風格 -->
+      <section class="card" data-group="style">
+        <h2 class="card-title">
+          <span class="icon" aria-hidden="true">✨</span>
+          想走什麼風格？
+        </h2>
+
+        <div class="chips">
+          <button class="chip" type="button" data-value="簡約">簡約</button>
+          <button class="chip" type="button" data-value="運動">運動</button>
+          <button class="chip" type="button" data-value="街頭">街頭</button>
+          <button class="chip" type="button" data-value="韓系">韓系</button>
+          <button class="chip" type="button" data-value="氣質">氣質</button>
+          <button class="chip" type="button" data-value="甜美">甜美</button>
+        </div>
+      </section>
+
+      <!-- 主按鈕 -->
+      <a class="submit-link" href="p3.html">
+        <button class="submit" type="button" id="goResult">
+          推薦穿搭
+        </button>
+      </a>
+
+    </div>
+
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
