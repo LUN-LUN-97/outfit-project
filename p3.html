@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>今日穿搭推薦</title>
+
+  <!-- 共用設計系統（P2 的 style.css） -->
+  <link rel="stylesheet" href="style.css" />
+  <!-- P3 專屬 -->
+  <link rel="stylesheet" href="p3.css" />
+</head>
+
+<body>
+  <main class="container p3">
+
+    <!-- 灰底 Header（同寬） -->
+    <header class="hero hero-full">
+      <h1 class="hero-title">今日穿搭推薦</h1>
+      <p class="hero-subtitle">已為你準備好今天的穿搭！</p>
+    </header>
+
+    <!-- 白底內容區（同寬、切齊） -->
+    <section class="surface">
+
+      <!-- 主圖（已生成圖片先展示） -->
+      <section class="outfit-hero" aria-label="今日穿搭主圖">
+        <div class="outfit-frame">
+          <img
+            class="outfit-image"
+            id="resultImage"
+            src="images/result_01.png"
+            alt="今日推薦穿搭"
+          />
+        </div>
+      </section>
+
+      <!-- 兩欄卡片：左「組合」右「條件」 -->
+      <section class="info-row" aria-label="穿搭資訊">
+
+        <!-- 左卡：今日穿搭組合 -->
+        <section class="card" aria-label="今日穿搭組合">
+          <div class="card-header">今日穿搭組合</div>
+
+          <!-- ✅ 組合內容容器：後續由推薦邏輯自動生成/替換 -->
+          <div class="card-body" id="outfitItems">
+            <div class="item-line"><span class="k">上衣：</span><span class="v">深藍襯衫</span></div>
+            <div class="item-line"><span class="k">下身：</span><span class="v">米白色百褶裙</span></div>
+            <div class="item-line"><span class="k">外套：</span><span class="v">黑色大衣</span></div>
+            <div class="item-line"><span class="k">鞋子：</span><span class="v">黑色踝靴</span></div>
+          </div>
+        </section>
+
+        <!-- 右卡：本次推薦條件（純文字標題 + 細線；chips 展示用不可點） -->
+        <section class="card" aria-label="本次推薦條件">
+          <div class="card-header center">本次推薦條件</div>
+
+          <div class="card-body">
+            <!-- ✅ 條件 chips 容器：後續由推薦邏輯替換 -->
+            <div class="chip-stack" id="conditionChips" aria-label="推薦條件標籤">
+              <span class="chip chip-solid">約會</span>
+              <span class="chip chip-solid">偏冷</span>
+              <span class="chip chip-solid">氣質</span>
+            </div>
+          </div>
+        </section>
+
+      </section>
+
+      <!-- 推薦理由 -->
+      <section class="reason" aria-label="推薦理由">
+        <h2 class="reason-title" id="reasonTitle">推薦理由</h2>
+        <p class="reason-text" id="reasonText">
+          深藍、米白與黑色的配色沈穩不顯厚重，黑色大衣搭配百褶裙，
+          呈現俐落優雅的約會風格，適合偏冷天氣穿著。
+        </p>
+      </section>
+
+      <!-- 底部按鈕 -->
+      <section class="actions" aria-label="操作按鈕">
+        <button type="button" class="btn btn-ghost" id="btnReroll">重新推薦</button>
+        <button type="button" class="btn btn-primary" id="btnHome">回首頁</button>
+      </section>
+
+    </section>
+
+  </main>
+</body>
+</html>

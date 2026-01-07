@@ -1,0 +1,428 @@
+/* =========================
+   P3 專屬樣式（穩定版 v3・整併版）
+   目標：對齊設計稿、避免爆開、避免重疊、左右卡等高
+   ========================= */
+
+/* fallback：不依賴 style.css 也能正常顯示 */
+:root{
+  --brand: var(--primary, #A59888);
+  --line: #7b6f63;
+  --gray: #EAEAEA;
+}
+
+/* page */
+.p3{
+  padding-top: 0;
+}
+
+/* =========================
+   Header 灰底（同寬）
+   ========================= */
+.hero-full{
+  background: #eeeeee;
+  border-radius: 0;
+  padding: 30px 16px 18px;
+
+  display: flex;              /* ✅ 用版面置中，不靠 text-align */
+  flex-direction: column;
+  align-items: center;        /* ✅ 讓 title/subtitle 這兩塊真正置中 */
+}
+
+.hero-full .hero-title{
+  margin: 0 0 10px;
+  font-size: 28px;
+  font-weight: 900;
+}
+
+.hero-full .hero-subtitle{
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--muted);   /* ← 跟 P2 副標一致 */
+  text-align: center;
+  width: 100%;
+}
+
+/* =========================
+   白底內容區：同寬切齊（抵掉 container padding）
+   ========================= */
+.surface{
+  background: #fff;
+  margin-left: -16px;
+  margin-right: -16px;
+  padding: 18px 16px 22px;
+}
+
+/* =========================
+   主圖區
+   ========================= */
+
+/* 主圖卡：內縮（像設計稿），並留出區塊呼吸感 */
+.outfit-hero{
+  border: 1.5px solid var(--line);
+  border-radius: 26px;
+  padding: 0px;
+  background: #fff;
+
+  width: 80%;
+  margin: 6px auto 22px;
+}
+
+/* 主圖框：用 padding-top 撐比例 */
+.outfit-frame{
+  position: relative;
+  width: 100%;
+  border-radius: 26px;
+  overflow: hidden;
+  background: #fff;
+}
+
+/* 主圖高度比例：偏方形（可微調 92%~105%） */
+.outfit-frame::before{
+  content: "";
+  display: block;
+  padding-top: 100%;
+}
+
+.outfit-image{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+}
+
+/* =========================
+   下方兩卡（組合 / 條件）
+   你要的重點：左右卡等高、不要壓住/像重疊
+   ========================= */
+
+.info-row{
+  display: grid;
+  grid-template-columns: 1.8fr 0.9fr; /* 左寬右窄（你原本的設定） */
+  gap: 14px;
+
+  width: 98%;
+  margin: 0 auto 22px;
+  align-items: stretch; /* ✅ 同列等高 */
+}
+
+/* 卡片基礎 */
+.card{
+  min-width: 0;
+  box-sizing: border-box;
+  background: #fff;
+  border: 1.5px solid var(--line);
+  border-radius: 18px;
+  overflow: hidden;
+
+  /* ✅ 止血：避免任何外部 transform/定位造成覆蓋感 */
+  position: relative;
+  transform: none;
+  margin: 0;
+  z-index: 0;
+
+  /* ✅ 讓卡片內部分成 header + body，等高且穩 */
+  display: flex;
+  flex-direction: column;
+}
+
+.card-header{
+  background: transparent;   /* 不要底色 */
+  color: #000;
+  padding: 8px 14px 0;                /* 不要方塊感 */
+  margin: 0;                 /* ✅ 不用 margin 來撐距離，交給線處理 */
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 1.3;
+}
+
+.card-header.center{
+  text-align: center;
+}
+
+/* body 會吃滿剩餘空間（左右卡一致），確保等高時內容不會擠壓成「重疊感」 */
+.card-body{
+  padding: 12px 14px 14px;
+  flex: none;
+}
+
+/* 左卡：組合文字 */
+.item-line{
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.65;
+}
+
+.item-line + .item-line{
+  margin-top: 8px;
+}
+
+.item-line .k{
+  margin-right: 6px;
+}
+
+/* chips（共用尺寸，你原本的） */
+.chip{
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 82px;
+  height: 30px;
+  border-radius: 999px;
+
+  font-weight: 800;
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+
+.chip.chip-solid{
+  background: #A59888;
+  color: #fff;
+  border: none;
+}
+
+/* =========================
+   右卡：照設計稿
+   標題方塊 + 分隔線 + 三顆 chip 置中直排
+   ========================= */
+
+/* 右卡 header：白底 + 中間方塊 */
+.info-row > .card:nth-child(2) .card-header{
+  background: transparent;
+  color: #000;
+  padding: 12px 0 8px;
+  text-align: center;
+}
+
+/* 方塊標題 */
+.info-row > .card:nth-child(2) .card-header .header-chip{
+  display: inline-block;
+  background: var(--brand);
+  color: #fff;
+  padding: 10px 18px;
+  border-radius: 0;
+  font-weight: 900;
+  font-size: 20px;
+  line-height: 1.1;
+}
+
+/* ✅ 分隔線（設計稿那條線） */
+.info-row > .card:nth-child(2) .card-header::after{
+  content: "";
+  display: block;
+  width: 68%;
+  height: 2px;
+  margin: 10px auto 0;
+  background: rgba(0,0,0,0.18);
+}
+
+/* chips stack：直排、置中 */
+.chip-stack{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding-top: 0;
+}
+
+/* =========================
+   左卡
+   ========================= */
+   .p3 .info-row > .card:nth-child(1){
+    position: relative;
+  }
+  
+  /* 1) 標題條：用 absolute 畫，不佔高度 */
+  .p3 .info-row > .card:nth-child(1) .card-header{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: #A59888;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 900;
+    line-height: 1.1;
+    padding: 18px 18px 14px;
+  
+    /* 分隔線：畫在裡面，不佔高度 */
+    box-shadow: inset 0 -1.5px 0 var(--line);
+  }
+  
+  /* 2) 內容區：往下讓出標題條空間，但「總高度不變」
+     - 做法：上 padding 加多少，下 padding 減多少
+     - 下面數字是配合你現在 card-body 預設 14/16 這種大小去抓的
+  */
+  .p3 .info-row > .card:nth-child(1) .card-body{
+    padding-top: 58px;     /* 讓內容落在標題條下方（依你字級/行數微調） */
+    padding-bottom: 0px;   /* 把多出來的高度吃回去，避免整張卡變高 */
+  }
+
+/* =========================
+   推薦理由
+   ========================= */
+.reason{
+  width: 98%;
+  margin: 0 auto 24px;
+  background: var(--gray);
+  border-radius: 14px;
+  padding: 14px 16px 16px;
+}
+
+.reason-title{
+  display: inline-block;
+  margin: 0 0 10px;
+  font-size: 18px;
+  font-weight: 900;
+  padding-bottom: 6px;
+  border-bottom: 1.5px solid #7b6f63; /* 咖啡色分隔線 */
+}
+
+.reason-text{
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.85;
+  font-weight: 700;
+  color: rgba(0,0,0,0.72);
+}
+
+/* =========================
+   按鈕
+   ========================= */
+.actions{
+  width: 92%;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding-bottom: 8px;
+}
+
+.actions .btn{
+  height: 48px;
+  border-radius: 999px;
+  font-weight: 900;
+  font-size: 16px;
+  pointer-events: auto;   /* ✅ 確保可以按 */
+  cursor: pointer;        /* ✅ 滑鼠呈現可點 */
+
+  /* 初始：右下實陰影（跟 P2 一樣，不霧） */
+  box-shadow: 4px 5px 8px rgba(0, 0, 0, 0.16);
+
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease;
+}
+
+/* hover：輕微往右下沉 */
+.actions .btn:hover{
+  transform: translate(2px, 2px);
+  box-shadow: 3px 4px 8px rgba(0, 0, 0, 0.13);
+}
+
+/* active：維持 hover 狀態，不再下移 */
+.actions .btn:active{
+  transform: translate(2px, 2px);
+  box-shadow: 3px 4px 8px rgba(0, 0, 0, 0.13);
+}
+
+/* 左：白底描邊 */
+.btn-ghost{
+  background: #fff;
+  border: 1.2px solid var(--line);
+  color: rgba(0,0,0,0.72);
+}
+
+/* 右：主色 */
+.actions .btn-primary{
+  background: var(--brand);
+  border: 2px solid var(--brand);
+  color: #fff;
+}
+
+/* =========================
+   P3 左右卡細調：右卡標題純文字 + 細線 + 展示標籤不可點
+   ========================= */
+
+/* 右卡 header：純文字（無底色） */
+.p3 .info-row > .card:nth-child(2) .card-header{
+  background: transparent;
+  color: #000;
+  text-align: center;
+  padding: 8px 0 10px;   /* 可微調：讓標題垂直位置更貼稿 */
+  font-size: 16px;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+}
+
+/* 如果你之前用了 .header-chip 方塊，這裡直接關掉它的方塊感 */
+.p3 .info-row > .card:nth-child(2) .card-header .header-chip{
+  background: transparent;
+  color: inherit;
+  padding: 0;
+  border-radius: 0;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+}
+
+/* 細分隔線：標題下方 */
+.p3 .info-row > .card:nth-child(2) .card-header::after{
+  content: "";
+  display: block;
+  width: 96%;
+  height: 1.5px;
+  margin: 8px auto 0;
+  background: #7b6f63;
+}
+
+/* 右卡 body：chips 區塊往下留一點空，並置中 */
+.p3 .info-row > .card:nth-child(2) .card-body{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 14px 14px; /* 上方留白讓細線與 chips 有距離 */
+}
+
+/* chips：展示用（不可點） */
+.p3 .info-row > .card:nth-child(2) .chip{
+  cursor: default;
+  pointer-events: none;
+  user-select: none;
+}
+
+.p3 .info-row > .card:nth-child(2) .chip:hover,
+.p3 .info-row > .card:nth-child(2) .chip:active,
+.p3 .info-row > .card:nth-child(2) .chip:focus{
+  outline: none;
+  filter: none;
+  transform: none;
+}
+
+/* 兩卡：讓左卡窄一點、整體更像設計稿比例 */
+.info-row{
+  grid-template-columns: 1.6fr 1fr; /* 原本 1.8fr 0.9fr → 左卡右邊界往左、右卡稍寬 */
+  gap: 16px;
+}
+
+/* ✅ 不要讓 card-body 撐出大片空白（卡就會變短） */
+.card-body{
+  flex: 0;            /* 原本 flex:1 會撐高 */
+  min-height: auto;
+}
+
+/* 右卡：chips 區塊上移一點（縮短整體高度） */
+.p3 .info-row > .card:nth-child(2) .card-body{
+  display: flex;
+  flex-direction: column;     /* ✅ 讓主軸變垂直，才有“往上”的概念 */
+  align-items: center;        /* ✅ 水平置中（避免你說的偏移） */
+  justify-content: flex-start;/* ✅ 垂直往上貼齊 */
+  padding: 10px 14px 2px;
+}
+
+.p3 .chip-stack{
+  gap: 12px;          /* 原本 12px → 10px，整體更緊湊 */
+}
