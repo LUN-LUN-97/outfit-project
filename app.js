@@ -1,24 +1,14 @@
 /* app.js
- * 目的：
- * 1) P2：chip 單選 + 視覺 active + 儲存到 localStorage（沿用舊 key：outfit_input）
- * 2) P3：讀取 localStorage + wardrobe.json -> 推薦 -> 灌進 p3.html
- *
- * 注意：
- * - 這版沿用你原本 P2 的「active」選取樣式與 localStorage key（outfit_input），所以 P2 變色不會消失。
- * - P3 需要在 p3.html 底部加：<script src="app.js"></script>
- * - wardrobe.json 需放在根目錄，並用 Live Server 跑（避免 fetch 失敗）
+ * P2：選條件 → localStorage
+ * P3：讀資料 → 推薦 → 顯示結果
  */
 
 const STORAGE_KEY = "outfit_input";
 const WARDROBE_URL = "wardrobe.json";
 
-/* ---------------------------
-   Tag Mapping（中文 -> 資料庫 tag key）
-   wardrobe.json 的欄位：
-   - occasion_tag（例如 date_occasion）
-   - weather_tags（例如 cold_weather）
-   - style_tags（例如 korean_style）
---------------------------- */
+/* =========================
+   Tag Mapping
+========================= */
 const MAP_SCENE = {
   上課: "class_occasion",
   上班: "work_occasion",
@@ -42,34 +32,15 @@ const MAP_STYLE = {
   甜美: "sweet_style",
 };
 
-/* ---------------------------
+/* =========================
    Utils
---------------------------- */
-function parseTags(raw) {
-  if (!raw) return [];
-  return String(raw)
-    .split(",")
-    .map((s) => s.trim())
-    .filter(Boolean);
-}
-
-function withUid(items) {
-  return items.map((it, idx) => ({
-    uid: `${it.ID ?? "noid"}_${idx}`, // 避免 ID 重複
-    ...it,
-    styleTags: parseTags(it.style_tags),
-    weatherTags: parseTags(it.weather_tags),
-    occasionTags: parseTags(it.occasion_tag),
-  }));
-}
-
+========================= */
 function $(sel) {
   return document.querySelector(sel);
 }
 
 function setText(el, text) {
-  if (!el) return;
-  el.textContent = text ?? "";
+  if (el) el.textContent = text ?? "";
 }
 
 function setImg(el, src, alt) {
@@ -86,59 +57,43 @@ function safeJsonParse(raw, fallback) {
   }
 }
 
-function getActiveValue(group) {
-  return document
-    .querySelector(`.card[data-group="${group}"] .chip.active`)
-    ?.dataset.value || "";
+function parseTags(raw) {
+  if (!raw) return [];
+  return String(raw)
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
 }
 
+function withUid(items) {
+  return items.map((it, idx) => ({
+    uid: `${it.ID ?? "noid"}_${idx}`,
+    ...it,
+    styleTags: parseTags(it.style_tags),
+    weatherTags: parseTags(it.weather_tags),
+    occasionTags: parseTags(it.occasion_tag),
+  }));
+}
 
-/* ---------------------------
-   P2：chip 單選 + 存 localStorage（沿用舊格式）
-   你的 P2 結構：
-   - section.card[data-group="scene|temp|style"]
-   - button.chip[data-value="上課"...]
-   - 送出按鈕：#goResult（外層有 <a href="p3.html">）
---------------------------- */
-function initP2ChipSelectUI() {
+/* =========================
+   P2
+========================= */
+function initP2() {
   document.querySelectorAll(".card[data-group]").forEach((card) => {
-    const group = card.dataset.group; // scene/temp/style
+    const group = card.dataset.group;
     const chips = card.querySelectorAll(".chip[data-value]");
 
     chips.forEach((btn) => {
       btn.addEventListener("click", () => {
-        // 同組只留一個 active（沿用你原本 CSS）
         chips.forEach((b) => b.classList.remove("active"));
         btn.classList.add("active");
 
-        // 存中文值（沿用舊 key：outfit_input）
-        const value = btn.dataset.value || "";
         const data = safeJsonParse(localStorage.getItem(STORAGE_KEY), {});
-        data[group] = value;
+        data[group] = btn.dataset.value;
         localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
       });
     });
   });
-}
-
-function getSelectionForRecommend() {
-  // 讀 P2 存的中文
-  const data = safeJsonParse(localStorage.getItem(STORAGE_KEY), {});
-  const sceneZh = data.scene || "";
-  const tempZh = data.temp || "";
-  const styleZh = data.style || "";
-
-  // 轉成資料庫 key（用來比對 wardrobe tag）
-  return {
-    display: { sceneZh, tempZh, styleZh },
-    scene: MAP_SCENE[sceneZh] || "",
-    temp: MAP_TEMP[tempZh] || "",
-    style: MAP_STYLE[styleZh] || "",
-  };
-}
-
-function initP2() {
-  initP2ChipSelectUI();
 
   const goBtn = $("#goResult");
   if (!goBtn) return;
@@ -146,49 +101,48 @@ function initP2() {
   goBtn.addEventListener("click", (e) => {
     e.preventDefault();
 
-    const scene = getActiveValue("scene");
-    const temp = getActiveValue("temp");
-    const style = getActiveValue("style");
-
-    if (!scene || !temp || !style) {
-      alert("請完成：情境 / 天氣 / 風格 三項選擇");
+    const data = safeJsonParse(localStorage.getItem(STORAGE_KEY), {});
+    if (!data.scene || !data.temp || !data.style) {
+      alert("請完成：情境 / 天氣 / 風格");
       return;
     }
-
-    // ✅ 通過後再寫入（覆蓋舊資料），給 P3 用
-    localStorage.setItem(
-      STORAGE_KEY,
-      JSON.stringify({ scene, temp, style })
-    );
 
     window.location.href = "p3.html";
   });
 }
 
-
-/* ---------------------------
-   推薦邏輯（暫時版，可換同學版本）
---------------------------- */
-function scoreItem(item, selection) {
-  let score = 0;
-
-  if (selection.scene && item.occasionTags.includes(selection.scene)) score += 3;
-  if (selection.temp && item.weatherTags.includes(selection.temp)) score += 2;
-  if (selection.style && item.styleTags.includes(selection.style)) score += 2;
-
-  return score;
+function getSelectionForRecommend() {
+  const data = safeJsonParse(localStorage.getItem(STORAGE_KEY), {});
+  return {
+    display: {
+      sceneZh: data.scene || "",
+      tempZh: data.temp || "",
+      styleZh: data.style || "",
+    },
+    scene: MAP_SCENE[data.scene] || "",
+    temp: MAP_TEMP[data.temp] || "",
+    style: MAP_STYLE[data.style] || "",
+  };
 }
 
-function pickBest(items, selection) {
+/* =========================
+   Recommend
+========================= */
+function scoreItem(item, sel) {
+  let s = 0;
+  if (sel.scene && item.occasionTags.includes(sel.scene)) s += 3;
+  if (sel.temp && item.weatherTags.includes(sel.temp)) s += 2;
+  if (sel.style && item.styleTags.includes(sel.style)) s += 2;
+  return s;
+}
+
+function pickBest(items, sel) {
   if (!items.length) return null;
-
   const ranked = items
-    .map((it) => ({ it, s: scoreItem(it, selection) }))
+    .map((it) => ({ it, s: scoreItem(it, sel) }))
     .sort((a, b) => b.s - a.s);
-
-  const bestScore = ranked[0].s;
-  const bestPool = ranked.filter((x) => x.s === bestScore).map((x) => x.it);
-  return bestPool[Math.floor(Math.random() * bestPool.length)];
+  const best = ranked.filter((x) => x.s === ranked[0].s).map((x) => x.it);
+  return best[Math.floor(Math.random() * best.length)];
 }
 
 function recommend(selection, wardrobe) {
@@ -200,7 +154,7 @@ function recommend(selection, wardrobe) {
   const top = pickBest(tops, selection);
   const bottom = pickBest(bottoms, selection);
 
-  // 外套：偏冷/舒適才出；偏熱不出
+  // ✅ 外套規則：偏冷 / 舒適 → 出；偏熱 → 不出
   const outer =
     selection.temp === "cold_weather" || selection.temp === "mild_weather"
       ? pickBest(outers, selection)
@@ -208,66 +162,51 @@ function recommend(selection, wardrobe) {
 
   const shoe = pickBest(shoes, selection);
 
-  const chips = [
-    selection.display.sceneZh || "",
-    selection.display.tempZh || "",
-    selection.display.styleZh || "",
-  ].filter(Boolean);
-
-  const reasonText =
-    `依照你選的條件（${chips.join("、")}），從衣櫃中挑出相符標籤的單品組合，` +
-    `讓整體在場合、天氣與風格上更一致。`;
-
   return {
-    imageSrc: "images/result_01.png", // 之後可換同學輸出
+    imageSrc: "images/result_01.png",
     outfit: { top, bottom, outer, shoes: shoe },
-    chips,
-    reasonText,
+    chips: [
+      selection.display.sceneZh,
+      selection.display.tempZh,
+      selection.display.styleZh,
+    ].filter(Boolean),
+    reasonText:
+      `依照你選的條件（${[
+        selection.display.sceneZh,
+        selection.display.tempZh,
+        selection.display.styleZh,
+      ]
+        .filter(Boolean)
+        .join("、")}），從衣櫃中挑出相符標籤的單品組合，` +
+      `讓整體在場合、天氣與風格上更一致。`,
   };
 }
 
-/* ---------------------------
-   P3：灌進你的 p3.html
-   你的 P3 HTML：
-   - 主圖：#resultImage
-   - 左卡：#outfitItems .item-line .v（四行）
-   - 右卡：#conditionChips
-   - 理由：#reasonText
-   - 按鈕：#btnReroll / #btnHome
---------------------------- */
+/* =========================
+   P3 Render（重點在這）
+========================= */
 function renderP3(result) {
   setImg($("#resultImage"), result.imageSrc, "今日推薦穿搭");
 
   const vEls = document.querySelectorAll("#outfitItems .item-line .v");
 
-  // 👉 關鍵判斷：有沒有出外套
   const outerIsNone = !result.outfit.outer;
 
-  const mapping = [
+  const texts = [
     result.outfit.top?.name || "（未找到上衣）",
     result.outfit.bottom?.name || "（未找到下身）",
-    outerIsNone
-      ? "（不需要外套）"
-      : (result.outfit.outer?.name || "（未找到外套）"),
+    outerIsNone ? "✕" : result.outfit.outer?.name || "（未找到外套）",
     result.outfit.shoes?.name || "（未找到鞋子）",
   ];
 
   vEls.forEach((el, i) => {
-    // 每次重畫都先清掉狀態（避免重新推薦殘留）
-    el.classList.remove("no-coat");
-
-    // 只有第 3 行（外套）＋「不出外套」才加 ✕
-    if (i === 2 && outerIsNone) {
-      el.classList.add("no-coat");
-    }
-
-    setText(el, mapping[i] || "");
+    setText(el, texts[i]);
   });
 
   const chipsWrap = $("#conditionChips");
   if (chipsWrap) {
     chipsWrap.innerHTML = "";
-    result.chips.slice(0, 3).forEach((txt) => {
+    result.chips.forEach((txt) => {
       const span = document.createElement("span");
       span.className = "chip chip-solid";
       span.textContent = txt;
@@ -278,18 +217,12 @@ function renderP3(result) {
   setText($("#reasonText"), result.reasonText);
 }
 
-
-async function loadWardrobe() {
-  const res = await fetch(WARDROBE_URL);
-  if (!res.ok) throw new Error(`Failed to load ${WARDROBE_URL}`);
-  const json = await res.json();
-  return withUid(json);
-}
-
+/* =========================
+   Init P3
+========================= */
 async function initP3() {
-  // ✅ 先綁按鈕：不管有沒有選到條件，都要能回 P2
-  const btnPickAgain = $("#btnPickAgain");      // 左：重選條件
-  const btnReRecommend = $("#btnReRecommend"); // 右：重新推薦
+  const btnPickAgain = $("#btnPickAgain");
+  const btnReRecommend = $("#btnReRecommend");
 
   if (btnPickAgain) {
     btnPickAgain.addEventListener("click", () => {
@@ -298,51 +231,25 @@ async function initP3() {
   }
 
   const selection = getSelectionForRecommend();
+  if (!selection.scene || !selection.temp || !selection.style) return;
 
-  // ⚠️ 沒選過 / 資料不完整：保留展示內容，但至少「重選條件」可用
-  if (!selection.display.sceneZh || !selection.display.tempZh || !selection.display.styleZh) {
-    // 右邊「重新推薦」在這種情況沒意義，就先不綁/或可提示
-    if (btnReRecommend) {
-      btnReRecommend.addEventListener("click", () => {
-        alert("請先回到上一頁完成：情境 / 天氣 / 風格 三項選擇");
-      });
-    }
-    return;
-  }
+  const wardrobe = withUid(await (await fetch(WARDROBE_URL)).json());
 
-  let wardrobe;
-  try {
-    wardrobe = await loadWardrobe();
-  } catch (err) {
-    console.error(err);
-    // wardrobe 讀不到時，仍允許回 P2
-    if (btnReRecommend) {
-      btnReRecommend.addEventListener("click", () => {
-        alert("衣櫃資料讀取失敗，請稍後再試或回上一頁重選。");
-      });
-    }
-    return;
-  }
-
-  // 初次渲染
-  const result = recommend(selection, wardrobe);
+  let result = recommend(selection, wardrobe);
   renderP3(result);
 
-  // ✅ 右：留在 P3，直接重新跑推薦邏輯
   if (btnReRecommend) {
     btnReRecommend.addEventListener("click", () => {
-      const next = recommend(selection, wardrobe);
-      renderP3(next);
+      result = recommend(selection, wardrobe);
+      renderP3(result);
     });
   }
 }
 
-
-/* ---------------------------
-   Auto run（依頁面判斷）
---------------------------- */
+/* =========================
+   Auto Run
+========================= */
 document.addEventListener("DOMContentLoaded", () => {
-  const isP3 = document.body.querySelector(".container.p3");
-  if (isP3) initP3();
+  if (document.querySelector(".container.p3")) initP3();
   else initP2();
 });
