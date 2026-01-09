@@ -1,35 +1,40 @@
 [
     {
       "ID": 1,
-      "name": "白色上衣",
+      "name": "深藍襯衫",
       "category": "top",
-      "style_tags": "simple_style,korean_style",
-      "weather_tags": "mild_weather,warm_weather",
-      "occasion_tag": "class_occasion,date_occasion"
+      "occasion_tag": "date_occasion",
+      "weather_tags": "cold_weather,mild_weather",
+      "style_tags": "lady_like_style",
+      "image": ""
     },
     {
       "ID": 2,
-      "name": "牛仔褲",
+      "name": "米白色百褶裙",
       "category": "bottom",
-      "style_tags": "simple_style,street_style",
-      "weather_tags": "mild_weather,cold_weather",
-      "occasion_tag": "class_occasion,work_occasion"
+      "occasion_tag": "date_occasion",
+      "weather_tags": "cold_weather,mild_weather",
+      "style_tags": "lady_like_style",
+      "image": ""
     },
     {
       "ID": 3,
-      "name": "針織外套",
+      "name": "黑色大衣",
       "category": "outer",
-      "style_tags": "korean_style,sweet_style",
-      "weather_tags": "cold_weather,mild_weather",
-      "occasion_tag": "date_occasion"
+      "occasion_tag": "date_occasion",
+      "weather_tags": "cold_weather",
+      "style_tags": "lady_like_style",
+      "image": ""
     },
     {
       "ID": 4,
-      "name": "白色球鞋",
+      "name": "黑色踝靴",
       "category": "shoes",
-      "style_tags": "simple_style,street_style",
-      "weather_tags": "all_weather",
-      "occasion_tag": "class_occasion,date_occasion"
+      "occasion_tag": "date_occasion",
+      "weather_tags": "cold_weather,mild_weather",
+      "style_tags": "lady_like_style",
+      "image": ""
     }
   ]
+  
   

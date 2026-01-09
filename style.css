@@ -239,6 +239,28 @@ body {
   margin: 0 2px;
 }
 
+/* ===== 手機修正：Step 換行顯示（iOS Safari） ===== */
+@media (max-width: 390px) {
+  .steps {
+    gap: 6px;
+  }
+
+  .step-item {
+    line-height: 1.3;
+  }
+
+  .step-num {
+    display: block;      /* 強制 STEP 與文字分行 */
+    margin-bottom: 2px;
+  }
+
+  .step-text {
+    display: block;
+    font-size: 13px;
+  }
+}
+
+
 .options-wrap{
   background: #fff;
   margin: 0 -16px;        /* 跟 hero 灰底切齊左右 */
