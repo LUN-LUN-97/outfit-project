@@ -149,7 +149,11 @@
 }
 
 /* 左卡：組合文字 */
+/* 左卡：組合文字（手機不跑版版） */
 .item-line{
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
   font-size: 14px;
   font-weight: 800;
   line-height: 1.65;
@@ -160,8 +164,17 @@
 }
 
 .item-line .k{
-  margin-right: 6px;
+  flex: 0 0 3.2em;      /* 左邊固定寬度：上衣／下身／外套／鞋子 */
+  white-space: nowrap;  /* 避免「上衣：」自己斷行 */
 }
+
+.item-line .v{
+  flex: 1;
+  min-width: 0;                 /* ✅ 重要：避免內容把卡片撐爆 */
+  overflow-wrap: anywhere;      /* 太長才換行 */
+  word-break: keep-all;         /* 中文不要亂斷 */
+}
+
 
 /* chips（共用尺寸，你原本的） */
 .chip{
@@ -356,6 +369,9 @@
   font-size: 16px;
   font-weight: 900;
   letter-spacing: 0.5px;
+  white-space: nowrap;      /* 不准換行 */
+  overflow: hidden;
+  text-overflow: ellipsis;  /* 極端情況才截斷（基本不會發生） */
 }
 
 /* 如果你之前用了 .header-chip 方塊，這裡直接關掉它的方塊感 */
@@ -426,3 +442,27 @@
 .p3 .chip-stack{
   gap: 12px;          /* 原本 12px → 10px，整體更緊湊 */
 }
+
+/* =========================
+   手機版微調（iOS Safari）
+   ========================= */
+
+   @media (max-width: 390px){
+    /* 左卡：今日穿搭組合 文字避免擠壓 */
+    .item-line{
+      gap: 8px;
+      line-height: 1.55;
+    }
+    .item-line .k{
+      flex-basis: 3em;
+    }
+  }
+  
+  @media (max-width: 390px){
+    /* 右卡：本次推薦條件 標題穩定單行 */
+    .p3 .info-row > .card:nth-child(2) .card-header{
+      font-size: 15px;
+      letter-spacing: 0.3px;
+    }
+  }
+  
