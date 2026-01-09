@@ -1,0 +1,35 @@
+[
+    {
+      "ID": 1,
+      "name": "白色上衣",
+      "category": "top",
+      "style_tags": "simple_style,korean_style",
+      "weather_tags": "mild_weather,warm_weather",
+      "occasion_tag": "class_occasion,date_occasion"
+    },
+    {
+      "ID": 2,
+      "name": "牛仔褲",
+      "category": "bottom",
+      "style_tags": "simple_style,street_style",
+      "weather_tags": "mild_weather,cold_weather",
+      "occasion_tag": "class_occasion,work_occasion"
+    },
+    {
+      "ID": 3,
+      "name": "針織外套",
+      "category": "outer",
+      "style_tags": "korean_style,sweet_style",
+      "weather_tags": "cold_weather,mild_weather",
+      "occasion_tag": "date_occasion"
+    },
+    {
+      "ID": 4,
+      "name": "白色球鞋",
+      "category": "shoes",
+      "style_tags": "simple_style,street_style",
+      "weather_tags": "all_weather",
+      "occasion_tag": "class_occasion,date_occasion"
+    }
+  ]
+  

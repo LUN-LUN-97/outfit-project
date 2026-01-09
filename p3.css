@@ -332,7 +332,7 @@
 /* 左：白底描邊 */
 .btn-ghost{
   background: #fff;
-  border: 1.2px solid var(--line);
+  border: 1.5px solid var(--line);
   color: rgba(0,0,0,0.72);
 }
 
