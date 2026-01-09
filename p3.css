@@ -108,6 +108,22 @@
   align-items: stretch; /* ✅ 同列等高 */
 }
 
+/* ===== 手機修正：兩卡比例 + 右卡標題不換行（iOS Safari） ===== */
+@media (max-width: 430px){
+  .info-row{
+    grid-template-columns: 1.35fr 1.05fr; /* 右卡變寬一點 */
+    gap: 12px;
+  }
+
+  /* 右卡標題：強制一行 */
+  .p3 .info-row > .card:nth-child(2) .card-header{
+    font-size: 14px;
+    letter-spacing: 0.2px;
+    white-space: nowrap;      /* ✅ 不換行 */
+    word-break: keep-all;     /* ✅ 中文不要亂斷 */
+  }
+}
+
 /* 卡片基礎 */
 .card{
   min-width: 0;
@@ -444,25 +460,33 @@
 }
 
 /* =========================
-   手機版微調（iOS Safari）
+   手機版（iOS Safari）：兩卡改單欄 + 標題不被裁切
+   放在 p3.css 最底部，避免被後面 .info-row 覆蓋
    ========================= */
+   @media (max-width: 430px){
 
-   @media (max-width: 390px){
-    /* 左卡：今日穿搭組合 文字避免擠壓 */
+    /* ✅ 關鍵：兩卡上下排，避免右卡太窄 */
+    .info-row{
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+  
+    /* ✅ 右卡標題：不要 ellipsis */
+    .p3 .info-row > .card:nth-child(2) .card-header{
+      font-size: 16px;
+      white-space: normal;
+      overflow: visible;
+      text-overflow: clip;
+    }
+  
+    /* 左卡文字：更穩 */
     .item-line{
       gap: 8px;
-      line-height: 1.55;
+      line-height: 1.6;
     }
     .item-line .k{
-      flex-basis: 3em;
+      flex: 0 0 3em;
     }
   }
   
-  @media (max-width: 390px){
-    /* 右卡：本次推薦條件 標題穩定單行 */
-    .p3 .info-row > .card:nth-child(2) .card-header{
-      font-size: 15px;
-      letter-spacing: 0.3px;
-    }
-  }
   
