@@ -239,13 +239,30 @@ function renderP3(result) {
   setImg($("#resultImage"), result.imageSrc, "今日推薦穿搭");
 
   const vEls = document.querySelectorAll("#outfitItems .item-line .v");
+
+  // 👉 關鍵判斷：有沒有出外套
+  const outerIsNone = !result.outfit.outer;
+
   const mapping = [
     result.outfit.top?.name || "（未找到上衣）",
     result.outfit.bottom?.name || "（未找到下身）",
-    result.outfit.outer?.name || "（不需要外套）",
+    outerIsNone
+      ? "（不需要外套）"
+      : (result.outfit.outer?.name || "（未找到外套）"),
     result.outfit.shoes?.name || "（未找到鞋子）",
   ];
-  vEls.forEach((el, i) => setText(el, mapping[i] || ""));
+
+  vEls.forEach((el, i) => {
+    // 每次重畫都先清掉狀態（避免重新推薦殘留）
+    el.classList.remove("no-coat");
+
+    // 只有第 3 行（外套）＋「不出外套」才加 ✕
+    if (i === 2 && outerIsNone) {
+      el.classList.add("no-coat");
+    }
+
+    setText(el, mapping[i] || "");
+  });
 
   const chipsWrap = $("#conditionChips");
   if (chipsWrap) {
@@ -260,6 +277,7 @@ function renderP3(result) {
 
   setText($("#reasonText"), result.reasonText);
 }
+
 
 async function loadWardrobe() {
   const res = await fetch(WARDROBE_URL);
