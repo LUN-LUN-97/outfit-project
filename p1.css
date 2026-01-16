@@ -1,0 +1,282 @@
+/* =========================
+   P1 專屬（依賴 style.css）
+   線稿版：弧線斜向、衣櫃更長、底部直角、頁面滿版高度
+   ========================= */
+
+   .p1{
+    --wardrobe: #A59888;
+  }
+  
+  /* ✅ P1：用 flex 做滿版，不靠 calc（避免 container padding 影響導致變更長） */
+  main.container.p1{
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* ✅ 上半部視覺區：自動吃剩下高度（不撐爆、不用滑） */
+  .p1 .p1-hero{
+    flex: 1 1 auto;      /* 吃剩下的高度 */
+    min-height: 0;       /* 關鍵：允許縮，不要把整頁撐長 */
+  
+    background: #fff;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+  }
+  
+  /* ✅ 弧形灰色漸層色塊（維持你現在的弧形） */
+  .p1 .p1-hero::before{
+    content:"";
+    position:absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events:none;
+  
+    background:
+      radial-gradient(
+        circle at 15% 5%,
+        #e0e0e0 0%,
+        #e6e6e6 45%,
+        #f2f2f2 65%,
+        rgba(255,255,255,0) 78%
+      );
+  }
+  
+  /* =========================
+     P1 弧形標題：My Digital Closet（套藝術字體）
+     ========================= */
+  .p1 .p1-curve-title{
+    position: absolute;
+    left: 50%;
+    top: 113px;
+    transform: translateX(-50%);
+    width: 260px;
+    height: 160px;
+    z-index: 5;
+    pointer-events: none;
+    overflow: visible; /* ✅ 不裁切 SVG 文字 */
+  }
+  
+  .p1 .p1-curve-text{
+    fill: #111;
+    font-family: "Cormorant Garamond", serif;
+    font-weight: 900;
+    font-size: 28px;
+    letter-spacing: 3px;
+  }
+  
+  /* =========================
+     ⭐ 星星（保留你的設定）
+     ========================= */
+  
+  /* 關掉十字星 pseudo element */
+  .p1 .spark::before,
+  .p1 .spark::after{
+    content: none !important;
+  }
+  
+  /* 用 P2 同款 icon 系統 */
+  .p1 .spark.icon{
+    position:absolute;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+  
+    width:30px;
+    height:30px;
+    color:#111111;
+    z-index:3;
+  }
+
+  /* 黑色實心星星（s1、s2）：放大一點 */
+.p1 .spark.icon:not(.hollow){
+    width: 34px;
+    height: 34px;
+  }
+  
+  /* 空心星星（s3、s4）：維持原本大小 */
+  .p1 .spark.icon.hollow{
+    width: 30px;
+    height: 30px;
+  }
+  
+  
+  .p1 .spark.icon .icon-svg{
+    width:100%;
+    height:100%;
+    display:block;
+  }
+  
+  /* 預設：實心（s1、s2） */
+  .p1 .spark.icon .icon-svg path{
+    fill: currentColor !important;
+    stroke: none !important;
+  }
+  
+  /* 空心（s3、s4） */
+  .p1 .spark.icon.hollow .icon-svg path{
+    fill: none !important;
+    stroke: currentColor !important;
+    stroke-width: 0.8;
+    stroke-linejoin: round;
+  }
+  
+  /* 位置：完全沿用你原本調好的 */
+  .p1 .s1{ top: 60px; left: 95px; }
+  .p1 .s2{ top: 220px; right: 30px; }
+  .p1 .s3{ bottom: 95px; left: 60px; }
+  .p1 .s4{ bottom: 6px; right: 120px; }
+  
+  /* =========================
+     衣櫃（插畫感最終版）
+     - 左右漸層
+     - 上半拱頂＋下半門用同一張貼皮（自然接合）
+     ========================= */
+  
+  .p1 .wardrobe{
+    position:absolute;
+    left:50%;
+    top: 340px;
+    transform:translate(-50%, -50%);
+    width: 190px;
+    height: 350px;
+    z-index: 4;
+  
+    /* 像貼在頁面上的一點點感覺 */
+    filter: drop-shadow(0 2px 0 rgba(0,0,0,0.06));
+  }
+  
+  /* 上半拱頂 */
+  .p1 .wardrobe::before{
+    content:"";
+    position:absolute;
+    left:0;
+    top:0;
+    width:100%;
+    height:130px;
+  
+    background:
+      linear-gradient(90deg,
+        rgba(255,255,255,0.10) 0%,
+        rgba(255,255,255,0.00) 28%,
+        rgba(0,0,0,0.03) 72%,
+        rgba(0,0,0,0.06) 100%
+      ),
+      var(--wardrobe);
+  
+    background-size: 100% 350px;
+    background-position: 0 0;
+  
+    border-radius:999px 999px 0 0;
+  }
+  
+  /* 水平分界線（淡） */
+  .p1 .wardrobe::after{
+    content:"";
+    position:absolute;
+    left:0;
+    top:87px;
+    width:100%;
+    height:1px;
+    background: rgba(60, 50, 40, 0.35);
+  }
+  
+  /* 下半門 */
+  .p1 .wardrobe-inner{
+    position:absolute;
+    left:0;
+    top:122px;
+    width:100%;
+    height:228px;
+  
+    background:
+      linear-gradient(90deg,
+        rgba(255,255,255,0.10) 0%,
+        rgba(255,255,255,0.00) 28%,
+        rgba(0,0,0,0.03) 72%,
+        rgba(0,0,0,0.06) 100%
+      ),
+      var(--wardrobe);
+  
+    background-size: 100% 350px;
+    background-position: 0 -122px;
+  
+    border-radius: 0;
+  }
+  
+  /* 中間門縫線 */
+  .p1 .door-line{
+    position:absolute;
+    top:-35px;
+    bottom:0px;
+    left:50%;
+    width:1.2px;
+    background: rgba(60, 50, 40, 0.45);
+    transform: translateX(-1px);
+  }
+  
+  /* 門把 */
+  .p1 .knob{
+    position:absolute;
+    top: 102px;
+    left: calc(40% + 44px);
+    width:10px;
+    height:10px;
+  
+    border: 1.2px solid rgba(60, 50, 40, 0.55);
+    border-radius:50%;
+    background:#eeeeee;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.10);
+  }
+  
+  /* =========================
+     下半按鈕區
+     ========================= */
+  .p1 .p1-surface{
+    flex: 0 0 120px;   /* ✅ 固定高度，確保不滑 */
+    height: 120px;
+  
+    background:#fff;
+    margin: 0 -16px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  
+  /* 按鈕（套用 P2 同款陰影與 hover 位移） */
+  .p1 .p1-btn{
+    width: 60%;
+    max-width: 280px;
+    height: 56px;
+    border-radius: 999px;
+    background: #7b6f63;
+    color: #fff;
+    text-decoration:none;
+  
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: .5px;
+  
+    box-shadow: 6px 7px 14px rgba(0, 0, 0, 0.22);
+  
+    transition:
+      transform 0.12s ease,
+      box-shadow 0.12s ease;
+  }
+  
+  .p1 .p1-btn:hover{
+    transform: translate(2px, 2px);
+    box-shadow: 3px 4px 8px rgba(0, 0, 0, 0.18);
+  }
+  
+  .p1 .p1-btn:active{
+    transform: translate(2px, 2px);
+    box-shadow: 3px 4px 8px rgba(0, 0, 0, 0.18);
+  }
+  

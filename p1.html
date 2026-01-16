@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>首頁</title>
+
+  <!-- ⭐ 藝術字體（弧形標題用） -->
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <!-- ✅ 共用設計系統（跟 P2 / P3 一樣） -->
+  <link rel="stylesheet" href="style.css" />
+  <!-- ✅ P1 專屬樣式 -->
+  <link rel="stylesheet" href="p1.css" />
+</head>
+
+<body>
+  <!-- ✅ 跟 P2 / P3 完全一致的外層 -->
+  <main class="container p1">
+
+    <!-- 上半部視覺區 -->
+    <header class="hero hero-full p1-hero" aria-label="首頁視覺">
+
+      <!-- 裝飾弧線（保留結構，實際是否顯示由 CSS 控制） -->
+      <svg
+        class="p1-arc"
+        viewBox="0 0 375 220"
+        preserveAspectRatio="none"
+        aria-hidden="true"
+      >
+        <path
+          class="arc-brown"
+          d="M-60,220 C40,170 130,130 220,110 C320,85 380,95 460,60"
+        />
+        <path
+          class="arc-black"
+          d="M-60,250 C40,200 130,160 220,140 C320,115 380,125 460,90"
+        />
+      </svg>
+
+      <!-- 裝飾星星（上實心、下空心） -->
+      <span class="spark s1 icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" class="icon-svg">
+          <path d="M12 2l1.2 5.1L18 9l-4.8 1.9L12 16l-1.2-5.1L6 9l4.8-1.9L12 2z"></path>
+        </svg>
+      </span>
+
+      <span class="spark s2 icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" class="icon-svg">
+          <path d="M12 2l1.2 5.1L18 9l-4.8 1.9L12 16l-1.2-5.1L6 9l4.8-1.9L12 2z"></path>
+        </svg>
+      </span>
+
+      <span class="spark s3 icon hollow" aria-hidden="true">
+        <svg viewBox="0 0 24 24" class="icon-svg">
+          <path d="M12 2l1.2 5.1L18 9l-4.8 1.9L12 16l-1.2-5.1L6 9l4.8-1.9L12 2z"></path>
+        </svg>
+      </span>
+
+      <span class="spark s4 icon hollow" aria-hidden="true">
+        <svg viewBox="0 0 24 24" class="icon-svg">
+          <path d="M12 2l1.2 5.1L18 9l-4.8 1.9L12 16l-1.2-5.1L6 9l4.8-1.9L12 2z"></path>
+        </svg>
+      </span>
+
+      <!-- 衣櫃插畫 -->
+      <div class="wardrobe" aria-hidden="true">
+        <div class="wardrobe-inner">
+          <span class="door-line"></span>
+          <span class="knob"></span>
+        </div>
+      </div>
+
+      <!-- ⭐ 弧形標題：藝術字體版本 -->
+      <svg class="p1-curve-title" viewBox="0 0 260 160" aria-hidden="true">
+        <defs>
+          <path id="p1TitleArc" d="M 20 120 A 110 110 0 0 1 240 120" />
+        </defs>
+
+        <text class="p1-curve-text">
+          <textPath href="#p1TitleArc" startOffset="52%" text-anchor="middle">
+            My Digital Closet
+          </textPath>
+        </text>
+      </svg>
+
+    </header>
+
+    <!-- 下半部白底區 -->
+    <section class="p1-surface" aria-label="開始操作">
+      <a class="p1-btn" href="./p2.html">Get Started</a>
+    </section>
+
+  </main>
+</body>
+</html>
