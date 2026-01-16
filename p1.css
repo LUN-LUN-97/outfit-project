@@ -7,23 +7,23 @@
     --wardrobe: #A59888;
   }
   
-  /* ✅ P1：用 flex 做滿版，不靠 calc（避免 container padding 影響導致變更長） */
-  main.container.p1{
-    min-height: 100vh;
+  /* ✅ 讓整頁高度吃滿手機視窗（避免變超長） */
+  .p1{
+    min-height: 100svh;
     display: flex;
     flex-direction: column;
   }
   
-  /* ✅ 上半部視覺區：自動吃剩下高度（不撐爆、不用滑） */
+  /* ✅ 上半部視覺區：用 flex 撐滿剩餘高度（不要 calc 100vh） */
   .p1 .p1-hero{
-    flex: 1 1 auto;      /* 吃剩下的高度 */
-    min-height: 0;       /* 關鍵：允許縮，不要把整頁撐長 */
-  
     background: #fff;
     padding: 0;
     position: relative;
     overflow: hidden;
     text-align: center;
+    flex: 1 1 auto;
+    height: auto;
+    min-height: 0;
   }
   
   /* ✅ 弧形灰色漸層色塊（維持你現在的弧形） */
@@ -235,11 +235,10 @@
      下半按鈕區
      ========================= */
   .p1 .p1-surface{
-    flex: 0 0 120px;   /* ✅ 固定高度，確保不滑 */
-    height: 120px;
-  
     background:#fff;
     margin: 0 -16px;
+    height: 120px;
+    flex: 0 0 120px;
     display:flex;
     align-items:center;
     justify-content:center;
