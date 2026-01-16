@@ -279,3 +279,19 @@
     box-shadow: 3px 4px 8px rgba(0, 0, 0, 0.18);
   }
   
+  /* ===== P1：手機滿版 + 按鈕貼底 + iOS 安全區（放檔案最底部）===== */
+
+/* ✅ iPhone 底部安全區（只影響 iOS） */
+  @supports (padding: env(safe-area-inset-bottom)){
+    .p1 .p1-surface{
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+  }
+  
+  /* ✅ 按鈕離衣櫃遠一點（不改高度、不改桌機排版） */
+  @media (max-width: 480px){
+    .p1 .p1-btn{
+      margin-top: 16px;
+    }
+  }
+  
